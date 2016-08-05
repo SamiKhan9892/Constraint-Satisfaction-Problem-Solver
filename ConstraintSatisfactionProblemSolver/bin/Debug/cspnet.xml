@@ -1,0 +1,563 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>cspnet</name>
+    </assembly>
+    <members>
+        <member name="T:Csp.Assignment`2">
+            <summary>
+            Represents an assignment of variables to values for a constraint-satisfaction problem.
+            </summary>
+        </member>
+        <member name="M:Csp.Assignment`2.#ctor">
+            <summary>
+            Constructs an empty assignment.
+            </summary>
+        </member>
+        <member name="M:Csp.Assignment`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{Csp.Variable{`0,`1},`1}})">
+            <summary>
+            Constructs an assignment with the specified variable/value assignments.
+            </summary>
+            <param name="assignments">the assignments</param>
+        </member>
+        <member name="M:Csp.Assignment`2.HasValue(Csp.Variable{`0,`1})">
+            <summary>
+            Returns true if there is a value assigned to the specified variable.
+            </summary>
+            
+            <param name="variable">the variable</param>
+            
+            <returns>true if the variable has been assigned a value</returns>
+        </member>
+        <member name="M:Csp.Assignment`2.GetValue(Csp.Variable{`0,`1})">
+            <summary>
+            Returns the value assigned to the given variable 
+            or the default value for the type if the variable 
+            does not have an assigned value.
+            </summary>
+            
+            <param name="variable">the variable</param>
+            
+            <returns>the assigned value or the default type value</returns>
+        </member>
+        <member name="M:Csp.Assignment`2.IsComplete(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}})">
+            <summary>
+             Returns true if all variables in this assignment have been assigned a value.
+             A complete assignment may not necessarily be consistent.
+            </summary>
+            
+            <param name="variables">all of the variables in a csp</param>
+            
+            <returns>true if the assignment is complete</returns>
+            
+            <exception cref="T:System.ArgumentNullException">if <code>variables</code> is null</exception>
+            
+        </member>
+        <member name="M:Csp.Assignment`2.IsConsistent(System.Collections.Generic.IEnumerable{Csp.IConstraint{`0,`1}})">
+            <summary>
+            Returns true if this none of the assignments violate any constraints.
+            A consistent assignment may not necessarily be complete.
+            </summary>
+            
+            <param name="constraints">all of the constraints in a csp</param>
+            
+            <returns>true if this assignment is consistent</returns>
+            
+            <exception cref="T:System.ArgumentNullException">if <code>constraints</code> is null</exception>
+        </member>
+        <member name="M:Csp.Assignment`2.AsReadOnlyDictionary">
+            <summary>
+            Returns an immutable dictionary representation of this assignment.
+            </summary>
+            <returns>a dictionary representation of this assignment</returns>
+        </member>
+        <member name="M:Csp.Assignment`2.Assign(Csp.Variable{`0,`1},`1)">
+            <summary>
+            Returns an assignment when the specified variable is assigned the specified value, 
+            and all other assignments are the same as in this one.  
+            This method will never modify the current assignment; it will return a new assignment.
+            </summary>
+            
+            <param name="variable">the variable to be assigned</param>
+            
+            <param name="value">the value to assign</param>
+            
+            <returns>the new assignment</returns>
+            
+            <exception cref="T:System.ArgumentNullException">if variable or value is null</exception>
+        </member>
+        <member name="M:Csp.Assignment`2.Unassign(Csp.Variable{`0,`1})">
+            <summary>
+            Returns an assignment when the specified variable is unassigned, 
+            and all other assignments are the same as in this one.
+            This method will never modify the current assignment; it will return a new assignment.
+            </summary>
+            
+            <param name="variable">the variable to unassign</param>
+            
+            <returns>the new assignment</returns>
+            
+            <exception cref="T:System.ArgumentNullException">if variable is null</exception>
+        </member>
+        <member name="P:Csp.Assignment`2.AssignedVariables">
+            <summary>
+            The variables that have an assigned value.
+            </summary>
+        </member>
+        <member name="T:Csp.DomainSortStrategies.RandomSortStrategy`2">
+            <summary>
+            A strategy that puts the elements in a random order.
+            </summary>
+            <typeparam name="TVar"></typeparam>
+            <typeparam name="TVal"></typeparam>
+        </member>
+        <member name="T:Csp.IDomainSortStrategy`2">
+            <summary>
+            A strategy for sorting the values in the domain of a variable.
+            </summary>
+        </member>
+        <member name="M:Csp.IDomainSortStrategy`2.GetOrderedDomain(Csp.Variable{`0,`1},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the values from the given variable's domain in the order 
+            with which they should be assigned.
+            </summary>
+            
+            <param name="variable">the variable from which to get the ordered domain</param>
+            
+            <param name="assignment">the current assigment</param>
+            
+            <param name="problem">the current problem</param>
+            
+            <returns>the ordered values in the domain of the variable</returns>
+        </member>
+        <member name="M:Csp.DomainSortStrategies.RandomSortStrategy`2.GetOrderedDomain(Csp.Variable{`0,`1},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the values from the variable's domain in a random order.
+            The order may be different each time this method is called.
+            </summary>
+            
+            <param name="variable">the variable from which to get the ordered domain</param>
+            
+            <param name="assignment">the current assigment</param>
+            
+            <param name="problem">the current problem</param>
+            
+            <returns>the domain of the variable in random order</returns>
+        </member>
+        <member name="T:Csp.RecursiveBacktrackSolver`2">
+            <summary>
+            Solves a constraint-satisfaction problem using a recursive backtracking algorithm.
+            </summary>
+        </member>
+        <member name="T:Csp.ISolver`2">
+            <summary>
+            Solves a constraint satisfaction problem.
+            </summary>
+            <typeparam name="TVar">type that variables represent</typeparam>
+            <typeparam name="TVal">type of value to assign to variables </typeparam>
+        </member>
+        <member name="M:Csp.ISolver`2.Solve(Csp.Problem{`0,`1},System.Threading.CancellationToken)">
+            <summary>
+            Attempts to solve the specified constraint satisfaction problem.
+            If the problem could not be solved then this will return null.
+            </summary>
+            <param name="problem">the problem to solve</param>
+            <param name="cancellationToken">a token that can be used to cancel the solve operation</param>
+            <returns>a complete assignment or null</returns>
+            <exception cref="T:System.OperationCanceledException">if the token is cancelled</exception>
+        </member>
+        <member name="M:Csp.RecursiveBacktrackSolver`2.#ctor(Csp.IVariableSelectionStrategy{`0,`1},Csp.IDomainSortStrategy{`0,`1})">
+            <summary>
+            Constructs a backtrack solver using the given strategies.
+            </summary>
+            
+            <param name="variableSelectionStrategy">the strategy for selecting the next unassigned variable, or null to use the default strategy</param>
+            
+            <param name="domainSortStrategy">the strategy for ordering the domain before assignment values, or null to use the default strategy</param>
+        </member>
+        <member name="M:Csp.RecursiveBacktrackSolver`2.Solve(Csp.Problem{`0,`1})">
+            <summary>
+            Attempts to solve the specified constraint satisfaction problem.
+            If the problem could not be solved then this will return null.
+            </summary>
+            <param name="problem">the problem to solve</param>
+            <returns>a complete assignment or null</returns>
+            <exception cref="T:System.ArgumentNullException">if the problem is null</exception>
+        </member>
+        <member name="M:Csp.RecursiveBacktrackSolver`2.Solve(Csp.Problem{`0,`1},System.Threading.CancellationToken)">
+            <summary>
+            Attempts to solve the specified constraint satisfaction problem.
+            If the problem could not be solved then this will return null.
+            </summary>
+            <param name="problem">the problem to solve</param>
+            <param name="cancellationToken">a token that can be used to cancel the solve operation</param>
+            <returns>a complete assignment or null</returns>
+            <exception cref="T:System.OperationCanceledException">if the token is cancelled</exception>
+            <exception cref="T:System.ArgumentNullException">if the problem is null</exception>
+        </member>
+        <member name="P:Csp.RecursiveBacktrackSolver`2.VariableSelectionStrategy">
+            <summary>
+            The stragy used by this solver for selecting unassigned variables.
+            </summary>
+        </member>
+        <member name="P:Csp.RecursiveBacktrackSolver`2.DomainSortStrategy">
+            <summary>
+            The strategy used by this solver for ordering the domain of a variable.
+            </summary>
+        </member>
+        <member name="T:Csp.Constraints.AllDifferentConstraint`2">
+            <summary>
+            A constraint that is violated if any two variables have the same value.
+            </summary>
+        </member>
+        <member name="T:Csp.IConstraint`2">
+            <summary>
+            Represents a constraint in a constraint-satisfaction problem.
+            </summary>
+        </member>
+        <member name="M:Csp.IConstraint`2.IsViolated(Csp.Assignment{`0,`1})">
+            <summary>
+            Returns true if this constraint is violated for the given 
+            assignment.
+            </summary>
+            
+            <param name="assignment">the assignment to check</param>
+            
+            <returns>true if the constraint is violated</returns>
+        </member>
+        <member name="P:Csp.IConstraint`2.Variables">
+            <summary>
+            The variables involved in this constraint. This should 
+            always include at least two variables (since instead of having a 
+            constraint on one variable, the invalid values can just be removed 
+            from the variable's domain).
+            </summary>
+        </member>
+        <member name="M:Csp.Constraints.AllDifferentConstraint`2.#ctor(Csp.Variable{`0,`1}[])">
+            <summary>
+            Constructs a constraint for ensuring that all of the specified variable have different values.
+            </summary>
+            <param name="variables">the variables</param>
+            <exception cref="T:System.ArgumentException">if fewer than two variables are provided</exception>
+        </member>
+        <member name="M:Csp.Constraints.AllDifferentConstraint`2.#ctor(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}})">
+            <summary>
+            Constructs a constraint for ensuring that all of the specified variable have different values.
+            </summary>
+            <param name="variables">the variables</param>
+            <exception cref="T:System.ArgumentException">if fewer than two variables are provided</exception>
+        </member>
+        <member name="M:Csp.Constraints.AllDifferentConstraint`2.IsViolated(Csp.Assignment{`0,`1})">
+            <summary>
+            Returns true if any two of the variables included in this constraint have the same values in the specified assignment.
+            </summary>
+        </member>
+        <member name="P:Csp.Constraints.AllDifferentConstraint`2.Variables">
+            <summary>
+            The variables that must all have different values.
+            </summary>
+        </member>
+        <member name="T:Csp.ComparerDomainSortStrategy`2">
+            <summary>
+            A strategy that sorts a variable's domain using a comparer.
+            </summary>
+        </member>
+        <member name="T:Csp.ComparerDomainSortStrategyBase`2">
+            <summary>
+            The base class for a strategy that sorts a variable's domain using a comparer.
+            </summary>
+            <typeparam name="TVar">type that variables represent</typeparam>
+            <typeparam name="TVal">type of value to assign to variables </typeparam>
+        </member>
+        <member name="M:Csp.ComparerDomainSortStrategyBase`2.GetOrderedDomain(Csp.Variable{`0,`1},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the values from the variable's domain in the order specified by this strategy's comparer.
+            </summary>
+            
+            <param name="variable">the variable from which to get the ordered domain</param>
+            
+            <param name="assignment">the current assigment</param>
+            
+            <param name="problem">the current problem</param>
+            
+            <returns>the ordered values in the domain of the variable</returns>
+        </member>
+        <member name="M:Csp.ComparerDomainSortStrategyBase`2.OrderValues(System.Collections.Generic.IEnumerable{`1},Csp.Variable{`0,`1},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the specified values in the order specified by this strategy's comparer.
+            </summary>
+            
+            <param name="values">the values to sort</param>
+            
+            <param name="variable">the current variable</param>
+            
+            <param name="assignment">the current assigment</param>
+            
+            <param name="problem">the current problem</param>
+            
+            <returns>the specified values in sorted order</returns>
+        </member>
+        <member name="M:Csp.ComparerDomainSortStrategyBase`2.GetComparer(Csp.Variable{`0,`1},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns a comparer for the specified variable, assignment, and problem.
+            </summary>
+            
+            <param name="variable">the current variable</param>
+            
+            <param name="assignment">the current assigment</param>
+            
+            <param name="problem">the current problem</param>
+            
+            <returns>the comparer</returns>
+        </member>
+        <member name="M:Csp.ComparerDomainSortStrategy`2.#ctor(System.Comparison{`1})">
+            <summary>
+            Constructs a sort strategy using the specified comparison.
+            </summary>
+            <param name="comparison">the comparison to use for sorting</param>
+        </member>
+        <member name="M:Csp.ComparerDomainSortStrategy`2.#ctor(System.Collections.Generic.IComparer{`1})">
+            <summary>
+            Constructs a sort strategy using the specified comparer.
+            </summary>
+            <param name="comparer">the comparer to use for sorting</param>
+        </member>
+        <member name="M:Csp.ComparerDomainSortStrategy`2.GetComparer(Csp.Variable{`0,`1},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the comparer that was used to construct this object.
+            </summary>
+        </member>
+        <member name="T:Csp.DefaultDomainSortStrategy`2">
+            <summary>
+            A default implementation of the domain sort strategy.
+            </summary>
+        </member>
+        <member name="M:Csp.DefaultDomainSortStrategy`2.GetOrderedDomain(Csp.Variable{`0,`1},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the variable's domain in the order that they are given from the variable's <c>Domain</c> property.
+            </summary>
+        </member>
+        <member name="T:Csp.Problem`2">
+            <summary>
+            Represents a constraint-satisfaction problem.
+            </summary>
+            <typeparam name="TVar">type that variables represent</typeparam>
+            <typeparam name="TVal">type of value to assign to variables </typeparam>
+        </member>
+        <member name="M:Csp.Problem`2.#ctor(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}},System.Collections.Generic.IEnumerable{Csp.IConstraint{`0,`1}})">
+            <summary>
+            Constructs a problem with the given variables and constraints and 
+            an empty initial assignment.
+            </summary>
+            
+            <param name="variables">the varibles</param>
+            
+            <param name="constraints">the constraints</param>
+            
+            <exception cref="T:System.ArgumentNullException">if any of the parameters are null</exception>
+        </member>
+        <member name="M:Csp.Problem`2.#ctor(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}},System.Collections.Generic.IEnumerable{Csp.IConstraint{`0,`1}},Csp.Assignment{`0,`1})">
+            <summary>
+            Constructs a problem with the given variables, constraints, 
+            and initial assignment.
+            </summary>
+            
+            <param name="variables">the variables</param>
+            
+            <param name="constraints">the constraints</param>
+            
+            <param name="initialAssignment">the initial assignment</param>
+            
+            <exception cref="T:System.ArgumentNullException">if the variables or constraints are null</exception>
+        </member>
+        <member name="P:Csp.Problem`2.Variables">
+            <summary>
+            The variables in this problem.
+            </summary>
+        </member>
+        <member name="P:Csp.Problem`2.Constraints">
+            <summary>
+            The constraints in this problem.
+            </summary>
+        </member>
+        <member name="P:Csp.Problem`2.InitialAssignment">
+            <summary>
+            The initial assignment of the problem.  
+            </summary>
+        </member>
+        <member name="T:Csp.Utils.ImmutableCollectionUtils">
+            <summary>
+            Helper methods for immutable collections.
+            </summary>
+        </member>
+        <member name="M:Csp.Utils.ImmutableCollectionUtils.AsImmutableDictionary``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}})">
+            <summary>
+            Returns an immutable dictionary representation of the specified items, only creating a new immutable dictionary if necessary.
+            </summary>
+        </member>
+        <member name="M:Csp.Utils.ImmutableCollectionUtils.AsImmutableList``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <summary>
+            Returns an immutable list representation of the specified items, only creating a new immutable list if necessary.
+            </summary>
+        </member>
+        <member name="T:Csp.Utils.RandomUtils">
+            <summary>
+            Helper methods for random number generation.
+            </summary>
+        </member>
+        <member name="M:Csp.Utils.RandomUtils.Shuffle``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Shuffles the elements in the list into a random order.
+            </summary>
+        </member>
+        <member name="P:Csp.Utils.RandomUtils.Instance">
+            <summary>
+            Returns an instance of a random number generator.
+            One instance will be created per thread.
+            </summary>
+        </member>
+        <member name="T:Csp.Variable`2">
+            <summary>
+            Represents a variable with a discrete domain of valid values in a constraint-satisfaction problem. 
+            </summary>
+            <typeparam name="TVar">type that variables represent</typeparam>
+            <typeparam name="TVal">type of value to assign to variables </typeparam>
+        </member>
+        <member name="M:Csp.Variable`2.#ctor(`0,System.Collections.Generic.IEnumerable{`1})">
+            <summary>
+            Constructs a variable with the given user object and the given discrete domain.
+            </summary>
+            <param name="userObject">the object that this variable represents</param>
+            <param name="domain">the domain of valid values that can be assigned to this variable</param>
+            <exception cref="T:System.ArgumentNullException">if either the user object or domain is null</exception>
+        </member>
+        <member name="M:Csp.Variable`2.ToString">
+            <summary>
+            Returns the string representation of the user object.
+            </summary>
+        </member>
+        <member name="P:Csp.Variable`2.UserObject">
+            <summary>
+            The user object represented by this variable.
+            </summary>
+            <remarks>
+            This name is based on what the Java DefaultMutableTreeNode calls its equivalent property.
+            </remarks>
+        </member>
+        <member name="P:Csp.Variable`2.Domain">
+            <summary>
+            The discrete domain of values that can be assigned to 
+            this variable.  This collection is immutable and will never be 
+            null.
+            </summary>
+        </member>
+        <member name="T:Csp.ComparerVariableSelectionStrategy`2">
+            <summary>
+            A variable selection strategy that uses a specified comparer.
+            </summary>
+        </member>
+        <member name="T:Csp.ComparerVariableSelectionStrategyBase`2">
+            <summary>
+            A base class for a variable selection strategy that uses a comparer.
+            </summary>
+        </member>
+        <member name="T:Csp.IVariableSelectionStrategy`2">
+            <summary>
+            Selects a variable for use in a backtracking constraint satisfaction problem solver 
+            (or any solver that needs to select variables one at a time).
+            </summary>
+        </member>
+        <member name="M:Csp.IVariableSelectionStrategy`2.SelectUnassignedVariable(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Selects the next unassigned variable.
+            </summary>
+            
+            <param name="variables">the variables to sort</param>
+            
+            <param name="assignment">the current assignment</param>
+            
+            <param name="problem">the problem that is being solved</param>
+            
+            <returns>an unassigned variable</returns>
+        </member>
+        <member name="M:Csp.ComparerVariableSelectionStrategyBase`2.SelectUnassignedVariable(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the first variable in the order specified by the comparer.
+            </summary>
+        </member>
+        <member name="M:Csp.ComparerVariableSelectionStrategyBase`2.OrderVariables(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns all of the variables in the order specified by the comparer.
+            </summary>
+        </member>
+        <member name="M:Csp.ComparerVariableSelectionStrategyBase`2.GetComparer(Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns a comparer for the specified assignment and problem.
+            </summary>
+        </member>
+        <member name="M:Csp.ComparerVariableSelectionStrategy`2.#ctor(System.Comparison{Csp.Variable{`0,`1}})">
+            <summary>
+            Constructs a variable selection strategy using the specified comparison.
+            </summary>
+            <param name="comparison">the comparison to use for sorting</param>
+        </member>
+        <member name="M:Csp.ComparerVariableSelectionStrategy`2.#ctor(System.Collections.Generic.IComparer{Csp.Variable{`0,`1}})">
+            <summary>
+            Constructs a variable selection strategy using the specified comparer.
+            </summary>
+            <param name="comparer">the comparer to use for sorting</param>
+        </member>
+        <member name="M:Csp.ComparerVariableSelectionStrategy`2.GetComparer(Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the comparer that was used to construct this object.  This does not use the assignment or problem.
+            </summary>
+        </member>
+        <member name="T:Csp.DefaultVariableSelectionStrategy`2">
+            <summary>
+            A default implementation of the variable selection strategy.
+            </summary>
+        </member>
+        <member name="M:Csp.DefaultVariableSelectionStrategy`2.SelectUnassignedVariable(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns the first unassigned variable in the specified variable list, without applying any ordering.
+            </summary>
+            <param name="variables">the first variable from this enumerable will be selected</param>
+            <param name="assignment">not used</param>
+            <param name="problem">not used</param>
+            <returns>the first unassigned variable</returns>
+        </member>
+        <member name="T:Csp.MaximumDegreeVariableSelectionStrategy`2">
+            <summary>
+            A variable selection strategy that returns the unassigned variable involved in the fewest constraints.
+            </summary>
+            <typeparam name="TVar">type that variables represent</typeparam>
+            <typeparam name="TVal">type of value to assign to variables </typeparam>
+        </member>
+        <member name="M:Csp.MaximumDegreeVariableSelectionStrategy`2.GetComparer(Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns a comparer for ordering variables by the degrees of freedom a solver would have for value assignment.
+            </summary>
+        </member>
+        <member name="T:Csp.MinimumRemainingValueVariableSelectionStrategy`2">
+            <summary>
+            A variable selection strategy that returns the unassigned variable with the fewest allowed remaining values in its domain.
+            </summary>
+        </member>
+        <member name="M:Csp.MinimumRemainingValueVariableSelectionStrategy`2.GetComparer(Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns a comparer that orders variables by the smallest number of remaining values that can be assigned to it.
+            </summary>
+        </member>
+        <member name="T:Csp.VariableSelectionStrategies.RandomVariableSelectionStrategy`2">
+            <summary>
+            A variable selection strategy that selects a random variable.
+            </summary>
+        </member>
+        <member name="M:Csp.VariableSelectionStrategies.RandomVariableSelectionStrategy`2.SelectUnassignedVariable(System.Collections.Generic.IEnumerable{Csp.Variable{`0,`1}},Csp.Assignment{`0,`1},Csp.Problem{`0,`1})">
+            <summary>
+            Returns a random unassigned variable from the list.
+            This may return a different variable each time it is called even if all of the inputs are the same.
+            </summary>
+        </member>
+    </members>
+</doc>
